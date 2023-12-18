@@ -1,19 +1,11 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import { TodoContextProvider } from './context/TodoContext'
+import TodoForm from './components/TodoForm';
+import TodoItem from './components/TodoItem';
 
 function App() {
   const [todos, setTodos] = useState([])
-
-  useEffect(() => {
-    const todosArr = JSON.parse(localStorage.getItem("todos"))
-    if (todos && todos.length > 0)
-      setTodos(todosArr)
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("todos", JSON.stringify(todos));
-  },[todos])
 
   const addTodo = (todo) => {
     setTodos((prevTodos) => [{
@@ -43,6 +35,16 @@ function App() {
     setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id))
   }
 
+  useEffect(() => {
+    const todos = JSON.parse(localStorage.getItem("todos"))
+    if (todos && todos.length > 0)
+      setTodos(todos)
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos])
+
   return (
     <TodoContextProvider value={{
       todos, addTodo,
@@ -55,9 +57,15 @@ function App() {
           <h1 className="text-2xl font-bold text-center mb-8 mt-2">Manage Your Todos</h1>
           <div className="mb-4">
             {/* Todo form goes here */}
+            <TodoForm />
           </div>
           <div className="flex flex-wrap gap-y-3">
             {/*Loop and Add TodoItem here */}
+            {todos.map((todo) => (
+              <div key={todo.id} className='w-full'>
+                <TodoItem todo={todo} />
+              </div>
+            ))}
           </div>
         </div>
       </div>

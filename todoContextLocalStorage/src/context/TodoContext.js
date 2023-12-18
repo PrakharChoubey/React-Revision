@@ -8,6 +8,6 @@ export const TodoContext = createContext({
     toggleComplete: (id) => { },
 })
 
-export const TodoContextProvider = () => TodoContext.Provider;
+export const TodoContextProvider = TodoContext.Provider;
 
 export const useTodo = () => useContext(TodoContext);
